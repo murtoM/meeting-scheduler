@@ -19,7 +19,8 @@ enum Commandtype {
 	L,	// print calendar
 	W,	// save db to file
 	O,	// open db from file
-	Q	// quit application
+	Q,	// quit application
+	ERROR // error occured parsing a command
 };
 
 /* User command */
@@ -32,11 +33,10 @@ typedef struct {
 /* Meeting */
 typedef struct {
 	MeetingDate date;
-	char *description;
+	char description[64];
 } Meeting;
 
 void print_calendar(Meeting*, int);
-
 Meeting *add_meeting(Meeting*, int, Meeting);
 Meeting *delete_meeting(Meeting*, int, MeetingDate);
 

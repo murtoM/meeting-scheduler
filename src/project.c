@@ -74,6 +74,10 @@ Meeting *add_meeting(Meeting *calendar, int num, Meeting newmeeting)
 		return NULL;
 
 	calendar = (Meeting*) realloc(calendar, (num + 1) * sizeof(Meeting));
+	if (!calendar) {
+		printf("ERROR: Could not allocate memory for new calendar!\n");
+		exit(1);
+	}
 	calendar[num] = newmeeting;
 	return calendar;
 }
@@ -83,16 +87,19 @@ Meeting *delete_meeting(Meeting *calendar, int num, MeetingDate timeslot)
 	// a dummy meeting struct to check the calendar against in
 	// `check_timeslot`
 	Meeting timeslot_dummy;
-	timeslot_dummy.description = NULL;
 	timeslot_dummy.date = timeslot;
 
 	int del_i = check_timeslot(calendar, num, timeslot_dummy);
-	
+
 	// indicate caller that the timeslot to delete was not found
 	if (del_i == -1)
 		return NULL;
 
 	Meeting *newcalendar = (Meeting*) calloc(num - 1, sizeof(Meeting));
+	if (!newcalendar) {
+		printf("ERROR: Could not allocate memory for new calendar!\n");
+		exit(1);
+	}
 
 	for (int i = 0; i < del_i; i++) {
 		newcalendar[i] = calendar[i];
@@ -105,6 +112,80 @@ Meeting *delete_meeting(Meeting *calendar, int num, MeetingDate timeslot)
 	return newcalendar;
 }
 
+Command command_parser()
+{
+	Command command;
+	command.meetingdate.month = 0;
+	command.meetingdate.day = 0;
+	command.meetingdate.hour = 0;
+	command.message = (char*) malloc(sizeof(char));
+	if (!command.message) {
+		printf("ERROR: Could not allocate memory for new meeting message!\n");
+		exit(1);
+	}
+	memset(command.message, '\0', 1);
+
+	char type[64], param0[64], param1[64], param2[64], param3[64];
+	char line[1000];
+	fgets(line, 1000, stdin);
+	sscanf(line, "%s %s %s %s %s",
+			type,
+			param0,
+			param1,
+			param2,
+			param3);
+
+	if (strcmp(type, "A") == 0) {
+		command.type = A;
+		command.message = (char*) realloc(command.message, strlen(param0) * sizeof(char));
+		if (!command.message) {
+			printf("ERROR: Could not allocate memory for new meeting message!\n");
+			exit(1);
+		}
+		strcpy(command.message, param0);
+		sscanf(param1, "%d", &command.meetingdate.month);
+		sscanf(param2, "%d", &command.meetingdate.day);
+		sscanf(param3, "%d", &command.meetingdate.hour);
+		return command;
+	}
+	if (strcmp(type, "D") == 0) {
+		command.type = D;
+		sscanf(param0, "%d", &command.meetingdate.month);
+		sscanf(param1, "%d", &command.meetingdate.day);
+		sscanf(param2, "%d", &command.meetingdate.hour);
+		return command;
+	}
+	if (strcmp(type, "W") == 0) {
+		command.type = W;
+		command.message = (char*) realloc(command.message, strlen(param0) * sizeof(char));
+		if (!command.message) {
+			printf("ERROR: Could not allocate memory for new meeting message!\n");
+			exit(1);
+		}
+		strcpy(command.message, param0);
+		return command;
+	}
+	if (strcmp(type, "O") == 0) {
+		command.type = O;
+		command.message = (char*) realloc(command.message, strlen(param0) * sizeof(char));
+		if (!command.message) {
+			printf("ERROR: Could not allocate memory for new meeting message!\n");
+			exit(1);
+		}
+		strcpy(command.message, param0);
+		return command;
+	}
+	if (strcmp(type, "L") == 0) {
+		command.type = L;
+		return command;
+	}
+	if (strcmp(type, "Q") == 0) {
+		command.type = Q;
+		return command;
+	}
+	command.type = ERROR;
+	return command;
+}
 
 int main()
 {
@@ -113,45 +194,58 @@ int main()
 		printf("Error: failed to alloc for calendar!");
 		return 1;
 	}
+	
+	Command command;
+	Meeting *processed;
+	Meeting newmeeting;
+	int num = 0;
+	do {
+		command = command_parser();
+		switch (command.type) {
+			case A:
+				newmeeting.date = command.meetingdate;
+				memset(newmeeting.description, '\0', 64);
+				strcpy(newmeeting.description, command.message);
+				processed = add_meeting(calendar, num, newmeeting);
+				if (!processed) {
+					printf("Meeting timeslot already taken!\n");
+					break;
+				}
+				num++;
+				calendar = processed;
+				free(command.message);
+				break;
+			case D:
+				processed = delete_meeting(calendar, num, command.meetingdate);
+				if (!processed) {
+					printf("Could not delete, such meeting does not exist\n");
+					break;
+				}
+				num--;
+				calendar = processed;
+				free(command.message);
+				break;
+			case L: 
+				print_calendar(calendar, num);
+				free(command.message);
+				break;
+			case W:
+				free(command.message);
+				break;
+			case O:
+				free(command.message);
+				break;
+			case Q:
+				free(command.message);
+				break;
+			case ERROR:
+				free(command.message);
+				break;
+			default:
+				break;
+		}
+	} while (command.type != Q);
 
-	Meeting meet0;
-	Meeting meet1;
-
-	MeetingDate date0;
-	MeetingDate date1;
-
-	date0.month = 1;
-	date0.day = 1;
-	date0.hour = 12;
-
-	date1.month = 6;
-	date1.day = 14;
-	date1.hour = 20;
-
-	meet0.date = date0;
-	meet1.date = date1;
-
-	meet0.description = "Meeting 0";
-	meet1.description = "Meeting 1";
-
-	calendar = add_meeting(calendar, 0, meet1);
-	calendar = add_meeting(calendar, 1, meet0);
-
-	print_calendar(calendar, 2);
-	MeetingDate del_date;
-	del_date.month = 6;
-	del_date.day = 14;
-	del_date.hour = 21;
-
-	Meeting *deleted = delete_meeting(calendar, 2, del_date);
-	if (!deleted)
-		printf("Could not delete, such meeting does not exists\n");
-	print_calendar(calendar, 2);
-
-	del_date.hour = 20;
-
-	calendar = delete_meeting(calendar, 2, del_date);
-	print_calendar(calendar, 1);
 	free(calendar);
 	return 0;
 }
