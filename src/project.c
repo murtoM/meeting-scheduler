@@ -54,7 +54,6 @@ void print_calendar(Meeting *calendar, int num)
 				calendar[i].date.month,
 				calendar[i].date.hour);
 	}
-	printf("SUCCESS\n");
 }
 
 int check_timeslot(Meeting* calendar, int num, Meeting newmeeting)
@@ -115,7 +114,7 @@ Meeting *delete_meeting(Meeting *calendar, int num, MeetingDate timeslot)
 int write_calendar(Meeting *calendar, int num, const char *filename)
 {
 	char buffer[1000];
-	FILE *file_ptr = fopen(filename, "wb");
+	FILE *file_ptr = fopen(filename, "w");
 	if (!file_ptr)
 		return 1;
 
@@ -144,7 +143,7 @@ Command command_parser()
 	command.meetingdate.hour = 0;
 	command.message = (char*) malloc(sizeof(char));
 	if (!command.message) {
-		printf("ERROR: Could not allocate memory for new meeting message!\n");
+		printf("ERROR: Could not allocate memory for new command message!\n");
 		exit(1);
 	}
 	memset(command.message, '\0', 1);
@@ -165,7 +164,7 @@ Command command_parser()
 				command.message,
 				(strlen(param0) + 1)* sizeof(char));
 		if (!command.message) {
-			printf("ERROR: Could not allocate memory for new meeting message!\n");
+			printf("ERROR: Could not allocate memory for new command message!\n");
 			exit(1);
 		}
 		strcpy(command.message, param0);
@@ -186,7 +185,7 @@ Command command_parser()
 		command.message = (char*) realloc(command.message,
 				(strlen(param0) + 1) * sizeof(char));
 		if (!command.message) {
-			printf("ERROR: Could not allocate memory for new meeting message!\n");
+			printf("ERROR: Could not allocate memory for new command message!\n");
 			exit(1);
 		}
 		strcpy(command.message, param0);
@@ -196,7 +195,7 @@ Command command_parser()
 		command.type = O;
 		command.message = (char*) realloc(command.message, strlen(param0) * sizeof(char));
 		if (!command.message) {
-			printf("ERROR: Could not allocate memory for new meeting message!\n");
+			printf("ERROR: Could not allocate memory for new command message!\n");
 			exit(1);
 		}
 		strcpy(command.message, param0);
@@ -236,9 +235,11 @@ int main()
 				processed = add_meeting(calendar, num, newmeeting);
 				if (!processed) {
 					printf("ERROR: Meeting timeslot already taken!\n");
+					free(command.message);
 					break;
 				}
 				num++;
+				printf("SUCCESS\n");
 				calendar = processed;
 				free(command.message);
 				break;
@@ -246,26 +247,33 @@ int main()
 				processed = delete_meeting(calendar, num, command.meetingdate);
 				if (!processed) {
 					printf("ERROR: Could not delete a meeting, such meeting does not exist\n");
+					free(command.message);
 					break;
 				}
 				num--;
+				printf("SUCCESS\n");
 				calendar = processed;
 				free(command.message);
 				break;
 			case L: 
 				print_calendar(calendar, num);
+				printf("SUCCESS\n");
 				free(command.message);
 				break;
 			case W:
 				if (write_calendar(calendar, num, command.message)) {
 					printf("ERROR: Error while writing a file.\n");
+					free(command.message);
+					break;
 				}
+				printf("SUCCESS\n");
 				free(command.message);
 				break;
 			case O:
 				free(command.message);
 				break;
 			case Q:
+				printf("SUCCESS\n");
 				free(command.message);
 				break;
 			case ERROR:
@@ -273,6 +281,8 @@ int main()
 				free(command.message);
 				break;
 			default:
+				printf("ERROR: something went horribly wrong!\n");
+				free(command.message);
 				break;
 		}
 	} while (command.type != Q);
