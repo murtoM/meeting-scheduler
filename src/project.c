@@ -112,6 +112,30 @@ Meeting *delete_meeting(Meeting *calendar, int num, MeetingDate timeslot)
 	return newcalendar;
 }
 
+int write_calendar(Meeting *calendar, int num, const char *filename)
+{
+	char buffer[1000];
+	FILE *file_ptr = fopen(filename, "wb");
+	if (!file_ptr)
+		return 1;
+
+	memset(buffer, '\0', 1000);
+	for (int i = 0; i < num; i++) {
+		snprintf(buffer, 1000, "%s %02d.%02d at %02d\n",
+				calendar[i].description,
+				calendar[i].date.day,
+				calendar[i].date.month,
+				calendar[i].date.hour);
+		fputs(buffer, file_ptr);
+	}
+	if (ferror(file_ptr)) {
+		fclose(file_ptr);
+		return 1;
+	}
+	fclose(file_ptr);
+	return 0;
+}
+
 Command command_parser()
 {
 	Command command;
@@ -137,7 +161,9 @@ Command command_parser()
 
 	if (strcmp(type, "A") == 0) {
 		command.type = A;
-		command.message = (char*) realloc(command.message, strlen(param0) * sizeof(char));
+		command.message = (char*) realloc(
+				command.message,
+				(strlen(param0) + 1)* sizeof(char));
 		if (!command.message) {
 			printf("ERROR: Could not allocate memory for new meeting message!\n");
 			exit(1);
@@ -157,7 +183,8 @@ Command command_parser()
 	}
 	if (strcmp(type, "W") == 0) {
 		command.type = W;
-		command.message = (char*) realloc(command.message, strlen(param0) * sizeof(char));
+		command.message = (char*) realloc(command.message,
+				(strlen(param0) + 1) * sizeof(char));
 		if (!command.message) {
 			printf("ERROR: Could not allocate memory for new meeting message!\n");
 			exit(1);
@@ -208,7 +235,7 @@ int main()
 				strcpy(newmeeting.description, command.message);
 				processed = add_meeting(calendar, num, newmeeting);
 				if (!processed) {
-					printf("Meeting timeslot already taken!\n");
+					printf("ERROR: Meeting timeslot already taken!\n");
 					break;
 				}
 				num++;
@@ -218,7 +245,7 @@ int main()
 			case D:
 				processed = delete_meeting(calendar, num, command.meetingdate);
 				if (!processed) {
-					printf("Could not delete, such meeting does not exist\n");
+					printf("ERROR: Could not delete a meeting, such meeting does not exist\n");
 					break;
 				}
 				num--;
@@ -230,6 +257,9 @@ int main()
 				free(command.message);
 				break;
 			case W:
+				if (write_calendar(calendar, num, command.message)) {
+					printf("ERROR: Error while writing a file.\n");
+				}
 				free(command.message);
 				break;
 			case O:
@@ -239,6 +269,7 @@ int main()
 				free(command.message);
 				break;
 			case ERROR:
+				printf("ERROR: Could not process command, please try again.\n");
 				free(command.message);
 				break;
 			default:
