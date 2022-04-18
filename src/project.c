@@ -1,9 +1,34 @@
+/** \file project.c
+ * \author Markus Murto
+ * 
+ * \copyright MIT
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "project.h"
 
+/**
+ * \brief Integer comparison function
+ * 
+ * Simple interger comparison function. 
+ * 
+ * \note Used internally only in compare_meeting() - not designed with `qsort`
+ * in mind, but the result is similar with typical `qsort` compar functions.
+ * 
+ * Returns:
+ * - `-1` if `a` < `b`
+ * - `1` if `a` > `b`
+ * - `0` if `a` == `b`
+ * 
+ * \param a First integer
+ * \param b Second integer
+ * 
+ * \return `int` Comparison result
+ */
 int compare_int(int a, int b)
 {
 	if (a < b) return -1;
@@ -11,6 +36,18 @@ int compare_int(int a, int b)
 	return 0;
 }
 
+/**
+ * \brief `Meeting` comparison function
+ * 
+ * `Meeting` comparison function which defines the order of the `Mettings` by
+ * their date. `Meeting` which has date before comes first. Designed to be used
+ * with `qsort()`.
+ * 
+ * \param meeting0 Void pointer to the first `Meeting`
+ * \param meeting1 Void pointer to the second `Meeting`
+ * 
+ * \return `int` Comparision result, as `qsort()` expects
+ */
 int compare_meeting(const void *meeting0, const void *meeting1)
 {
 	Meeting *a = (Meeting*) meeting0;
@@ -28,21 +65,17 @@ int compare_meeting(const void *meeting0, const void *meeting1)
 /**
  * \brief Prints all meetings in the calendar.
  *
- * \details The function first sorts the meetings in the calendar according to
- * `date`, and then prints each `Meeting` in the following format:
- * `"%s %02d.%02d at %02d",
- * 	Meeting.description,
- * 	Meeting.date.day,
- * 	Meeting.date.month,
- * 	Meeting.date.hour`
+ * The function first sorts the meetings in the calendar according to
+ * `date`, and then prints each `Meeting` to `stdout` in the same plain text
+ * format is used as in `write_calendar()`:
+ * 
+ * `"%s %02d.%02d at %02d", Meeting.description, Meeting.date.day,
+ * Meeting.date.month, Meeting.date.hour`
  *
  * For example: `Example meeting 24.03 at 20`
  *
- * After all of the meetings have been printed, a line containing `SUCCESS` is
- * printed.
- *
- * \param calendar Pointer to an array of meetings.
- * \param num Number of meetings in calendar.
+ * \param calendar Pointer to an array of `Meeting`s
+ * \param num Number of meetings in calendar
  */
 void print_calendar(Meeting *calendar, int num)
 {
@@ -56,6 +89,23 @@ void print_calendar(Meeting *calendar, int num)
 	}
 }
 
+/**
+ * \brief Checks if the calendar already has the timeslot taken.
+ * 
+ * Checks if the calendar already has the timeslot taken. If the timeslot is
+ * already taken, returns the index in the calendar, which date matches with the
+ * new meeting. If the timeslot is free in the calendar, returns `-1`.
+ * 
+ * Used internally in add_meeting() and delete_meeting().
+ * 
+ * \param calendar Pointer to the `Meeting` array, "calendar"
+ * \param num Number of meetings in the calendar
+ * \param newmeeting A new `Meeting`, which timeslot might match with existing
+ * meeting
+ * 
+ * \return `int` Index of matching meeting timeslot in calendar, `-1` if there is
+ * no match
+ */
 int check_timeslot(Meeting* calendar, int num, Meeting newmeeting)
 {
 	for (int i = 0; i < num; i++) {
@@ -66,6 +116,21 @@ int check_timeslot(Meeting* calendar, int num, Meeting newmeeting)
 	return -1;
 }
 
+/**
+ * \brief Add new `Meeting` to the calendar, if there is a free timeslot for it
+ * 
+ * Add new `Meeting` to the calendar, if there is a free timeslot for it - if
+ * there is no free timeslot, returns `NULL`. The new `Meeting` is appended to
+ * the end of the calendar, no sorting is done to the calendar. If the addition
+ * is successful, returns pointer to the calendar.
+ * 
+ * \param calendar Pointer to the `Meeting` array, "calendar"
+ * \param num Number of meetings in the calendar
+ * \param newmeeting A new `Meeting` to be added into the calendar
+ * 
+ * \return `Meeting`* Pointer to the new calendar, `NULL` if the new meeting could
+ * not be added
+ */
 Meeting *add_meeting(Meeting *calendar, int num, Meeting newmeeting)
 {
 	// indicate caller that the meeting timeslot is already taken
@@ -81,6 +146,20 @@ Meeting *add_meeting(Meeting *calendar, int num, Meeting newmeeting)
 	return calendar;
 }
 
+/**
+ * \brief Delete a `Meeting` from the calendar
+ * 
+ * Delete a `Meeting` from the calendar. If the meeting was not found in the
+ * calendar, returns `NULL`. If the deletion was successful, returns pointer to
+ * the new calendar.
+ * 
+ * \param calendar Pointer to the `Meeting` array, "calendar"
+ * \param num Number of meetings in the calendar
+ * \param timeslot `MeetingDate` used to match with a `Meeting` in the calendar
+ * 
+ * \return `Meeting`* Pointer to the new calendar, `NULL` if the meeting could not
+ * be deleted
+ */
 Meeting *delete_meeting(Meeting *calendar, int num, MeetingDate timeslot)
 {
 	// a dummy meeting struct to check the calendar against in
@@ -111,6 +190,24 @@ Meeting *delete_meeting(Meeting *calendar, int num, MeetingDate timeslot)
 	return newcalendar;
 }
 
+/**
+ * \brief Writes the calendar as plain text into a file
+ * 
+ * Writes the calendar as plain text into a file in the filesystem. Same plain
+ * text format is used as in `print_calendar()`:
+ * 
+ * `"%s %02d.%02d at %02d", Meeting.description, Meeting.date.day,
+ * Meeting.date.month, Meeting.date.hour`
+ *
+ * For example: `Example meeting 24.03 at 20`
+ * 
+ * \param calendar Pointer to the `Meeting` array, "calendar"
+ * \param num Number of meetings in the calendar
+ * \param filename Path to filename to which calendar is written
+ * 
+ * \return `int` `1` if an error occurs during writing, `0` if writing was
+ * successful
+ */
 int write_calendar(Meeting *calendar, int num, const char *filename)
 {
 	char buffer[1000];
@@ -135,6 +232,66 @@ int write_calendar(Meeting *calendar, int num, const char *filename)
 	return 0;
 }
 
+/**
+ * \brief Takes a command from the user and returns it as a `Command`
+ * 
+ * Takes user input in specific format and parses it into a proper `Command`
+ * `struct`.
+ * 
+ * Expected Add meeting (\ref A) command: 
+ * 
+ * ```
+ * A <description> <month> <day> <hour>
+ * ```
+ * 
+ * For example:
+ * 
+ * ```
+ * A Haircut 3 26 14
+ * ```
+ * 
+ * Expected Delete meeting (\ref D) command:
+ * 
+ * ```
+ * D <month> <day> <hour>
+ * ```
+ * 
+ * For example:
+ * 
+ * ```
+ * D 3 26 14
+ * ```
+ * 
+ * Expected Print calendar (\ref L) command:
+ * 
+ * ```
+ * L
+ * ```
+ * 
+ * Expected Save to file (\ref W) command:
+ * 
+ * ```
+ * W <filename>
+ * ```
+ * 
+ * Expected Load from file (\ref O) command:
+ * 
+ * ```
+ * O <filename>
+ * ```
+ * 
+ * Expected Quit program (\ref Q) command:
+ * 
+ * ```
+ * Q
+ * ```
+ * 
+ * If the command is none of these, a `Command` with type \ref ERROR is returned.
+ * 
+ * \warning There is no further validation or sanitation at the moment.
+ * 
+ * \return Command Parsed `Command`
+ */
 Command command_parser()
 {
 	Command command;
@@ -213,6 +370,17 @@ Command command_parser()
 	return command;
 }
 
+/**
+ * \brief Application entry
+ * 
+ * Application entry, starts taking user input in application command-line
+ * (\ref command_parser()) and intrepretes the input into actions.
+ * 
+ * Prints `SUCCESS\n` into `stdout` after each successfully processed command.
+ * If a command was not successfully processed, an error message is printed.
+ * 
+ * \return `int` Zero if the application quits successfully
+ */
 int main()
 {
 	Meeting *calendar = (Meeting*) calloc(2, sizeof(Meeting));
