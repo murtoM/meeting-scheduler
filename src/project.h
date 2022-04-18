@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Markus Murto
+//
+// SPDX-License-Identifier: MIT
+
 /** \file project.h
  * \author Markus Murto
  * 
