@@ -386,7 +386,9 @@ Meeting *load_calendar(const char *filename)
  * 
  * If the command is none of these, a `Command` with type \ref ERROR is returned.
  * 
- * \warning There is no further validation or sanitation at the moment.
+ * \warning There is quite little validation. The function only validates the
+ * command type and the number of arguments. `MeetingDate` can be validated
+ * with `validate_date()`.
  * 
  * \return Command Parsed `Command`
  */
@@ -403,53 +405,133 @@ Command command_parser()
 	}
 	memset(command.message, '\0', 1);
 
-	char type[64], param0[64], param1[64], param2[64], param3[64];
+	// setup buffers for each parameter and initialize them
+	char type[200], param0[200], param1[200], param2[200], param3[200];
+	memset(type, '\0', 200);
+	memset(param0, '\0', 200);
+	memset(param1, '\0', 200);
+	memset(param2, '\0', 200);
+	memset(param3, '\0', 200);
+
+	// buffer for the whole line and initialize
 	char line[1000];
+	memset(line, '\0', 1000);
+
+	// read user input and parse it into each param buffer
 	fgets(line, 1000, stdin);
 	sscanf(line, "%s %s %s %s %s", type, param0, param1, param2, param3);
 
 	if (strcmp(type, "A") == 0) {
-		command.type = A;
-		command.message = (char *)realloc(
-			command.message, (strlen(param0) + 1) * sizeof(char));
-		if (!command.message) {
-			printf("ERROR: Could not allocate memory for new command message!\n");
-			exit(1);
+		// A command requires 4 arguments
+		if (((strlen(param0) > 0) && (strlen(param1) > 0)) &&
+		    ((strlen(param2) > 0) && (strlen(param3) > 0))) {
+			command.type = A;
+			command.message = (char *)realloc(command.message,
+							  (strlen(param0) + 1) *
+								  sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for new command message!\n");
+				exit(1);
+			}
+			strcpy(command.message, param0);
+			sscanf(param1, "%d", &command.meetingdate.month);
+			sscanf(param2, "%d", &command.meetingdate.day);
+			sscanf(param3, "%d", &command.meetingdate.hour);
+			return command;
+		} else { // not enough arguments
+			command.type = ERROR;
+			char *error_msg =
+				"A should be followed by exactly 4 arguments.";
+			command.message = (char *)realloc(
+				command.message,
+				(strlen(error_msg) + 1) * sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for error message!\n");
+				exit(1);
+			}
+			strcpy(command.message, error_msg);
+			return command;
 		}
-		strcpy(command.message, param0);
-		sscanf(param1, "%d", &command.meetingdate.month);
-		sscanf(param2, "%d", &command.meetingdate.day);
-		sscanf(param3, "%d", &command.meetingdate.hour);
-		return command;
 	}
 	if (strcmp(type, "D") == 0) {
-		command.type = D;
-		sscanf(param0, "%d", &command.meetingdate.month);
-		sscanf(param1, "%d", &command.meetingdate.day);
-		sscanf(param2, "%d", &command.meetingdate.hour);
-		return command;
+		// D command requires 3 arguments
+		if ((strlen(param0) > 0) && (strlen(param1) > 0) &&
+		    (strlen(param2) > 0)) {
+			command.type = D;
+			sscanf(param0, "%d", &command.meetingdate.month);
+			sscanf(param1, "%d", &command.meetingdate.day);
+			sscanf(param2, "%d", &command.meetingdate.hour);
+			return command;
+		} else { // not enough arguments
+			command.type = ERROR;
+			char *error_msg =
+				"D should be followed by exactly 3 arguments.";
+			command.message = (char *)realloc(
+				command.message,
+				(strlen(error_msg) + 1) * sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for error message!\n");
+				exit(1);
+			}
+			strcpy(command.message, error_msg);
+			return command;
+		}
 	}
 	if (strcmp(type, "W") == 0) {
-		command.type = W;
-		command.message = (char *)realloc(
-			command.message, (strlen(param0) + 1) * sizeof(char));
-		if (!command.message) {
-			printf("ERROR: Could not allocate memory for new command message!\n");
-			exit(1);
+		// W command requires 1 argument
+		if (strlen(param0) > 0) {
+			command.type = W;
+			command.message = (char *)realloc(command.message,
+							  (strlen(param0) + 1) *
+								  sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for new command message!\n");
+				exit(1);
+			}
+			strcpy(command.message, param0);
+			return command;
+		} else { // not enough arguments
+			command.type = ERROR;
+			char *error_msg =
+				"W should be followed by exactly 1 argument.";
+			command.message = (char *)realloc(
+				command.message,
+				(strlen(error_msg) + 1) * sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for error message!\n");
+				exit(1);
+			}
+			strcpy(command.message, error_msg);
+			return command;
 		}
-		strcpy(command.message, param0);
-		return command;
 	}
 	if (strcmp(type, "O") == 0) {
-		command.type = O;
-		command.message = (char *)realloc(
-			command.message, (strlen(param0) + 1) * sizeof(char));
-		if (!command.message) {
-			printf("ERROR: Could not allocate memory for new command message!\n");
-			exit(1);
+		// O command requires 1 argument
+		if (strlen(param0) > 0) {
+			command.type = O;
+			command.message = (char *)realloc(command.message,
+							  (strlen(param0) + 1) *
+								  sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for new command message!\n");
+				exit(1);
+			}
+			strcpy(command.message, param0);
+			return command;
+		} else { // nto enough arguments
+			command.type = ERROR;
+			char *error_msg =
+				"O should be followed by exactly 1 argument.";
+			command.message = (char *)realloc(
+				command.message,
+				(strlen(error_msg) + 1) * sizeof(char));
+			if (!command.message) {
+				printf("ERROR: Could not allocate memory for error message!\n");
+				exit(1);
+			}
+			strcpy(command.message, error_msg);
+			return command;
 		}
-		strcpy(command.message, param0);
-		return command;
 	}
 	if (strcmp(type, "L") == 0) {
 		command.type = L;
@@ -500,7 +582,10 @@ int main()
 				processed =
 					add_meeting(calendar, num, newmeeting);
 				if (!processed) {
-					printf("ERROR: Meeting timeslot already taken!\n");
+					printf("The time slot %02d.%02d at %02d is already allocated.\n",
+						command.meetingdate.day,
+						command.meetingdate.month,
+						command.meetingdate.hour);
 					free(command.message);
 					break;
 				}
