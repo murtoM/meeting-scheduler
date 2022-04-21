@@ -416,7 +416,7 @@ Command command_parser()
 	if (strcmp(type, "O") == 0) {
 		command.type = O;
 		command.message = (char *)realloc(
-			command.message, strlen(param0) * sizeof(char));
+			command.message, (strlen(param0) + 1) * sizeof(char));
 		if (!command.message) {
 			printf("ERROR: Could not allocate memory for new command message!\n");
 			exit(1);
@@ -484,7 +484,10 @@ int main()
 			processed = delete_meeting(calendar, num,
 						   command.meetingdate);
 			if (!processed) {
-				printf("ERROR: Could not delete a meeting, such meeting does not exist\n");
+				printf("The time slot %02d.%02d at %02d is not in the calendar\n",
+					command.meetingdate.day,
+					command.meetingdate.month,
+					command.meetingdate.hour);
 				free(command.message);
 				break;
 			}
@@ -510,12 +513,14 @@ int main()
 		case O:
 			processed = load_calendar(command.message);
 			if (!processed) {
-				printf("ERROR: Could not load a calendar!\n");
+				printf("Cannot open file %s for reading.\n",
+					command.message);
 				free(command.message);
 				break;
 			}
 			printf("SUCCESS\n");
 			num = file_line_count(command.message);
+			free(calendar);
 			calendar = processed;
 			free(command.message);
 			break;
