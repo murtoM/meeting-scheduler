@@ -124,6 +124,32 @@ int check_timeslot(Meeting *calendar, int num, Meeting newmeeting)
 }
 
 /**
+ * \brief Returns the number of lines in a file.
+ *
+ * Returns the number of lines in a file, if an error occurs while reading the
+ * file, returns `-1`.
+ * 
+ * \param filename The name of the file
+ *
+ * \return `int` The number of files in the file, or `-1` if an error occurs
+ */
+int file_line_count(const char *filename)
+{
+	FILE *file_ptr = fopen(filename, "r");
+	if (!file_ptr)
+		return -1;
+
+	int count = 0;
+	char buffer[1000];
+
+	while (fgets(buffer, 1000, file_ptr))
+		count++;
+
+	fclose(file_ptr);
+	return count;
+}
+
+/**
  * \brief Add new `Meeting` to the calendar, if there is a free timeslot for it
  * 
  * Add new `Meeting` to the calendar, if there is a free timeslot for it - if
@@ -235,6 +261,46 @@ int write_calendar(Meeting *calendar, int num, const char *filename)
 	}
 	fclose(file_ptr);
 	return 0;
+}
+
+/**
+ * \brief Loads a calendar plain text file and returns a `Meeting` array,
+ * "calendar".
+ *
+ * Reads a calendar plain text file, which has to be written in the same format
+ * as `write_calendar()` uses.
+ *
+ * Does not return the number of lines in the file, you have to use the function
+ * `file_line_count()` to get the number of lines in a file, which is used in
+ * other functions.
+ * 
+ * \param filename Path to filename from which calendar is read from
+ *
+ * \return `Meeting`* Pointer to the `Meeting` array, "calendar"
+ */
+Meeting *load_calendar(const char *filename)
+{
+	char buffer[1000];
+	FILE *file_ptr = fopen(filename, "r");
+	if (!file_ptr)
+		return NULL;
+
+	Meeting *calendar = (Meeting *) malloc(sizeof(Meeting));
+
+	memset(buffer, '\0', 1000);
+	int i = 0;
+	while (fgets(buffer, 1000, file_ptr)) {
+		calendar = (Meeting *) realloc(calendar, ++i * sizeof(Meeting));
+		sscanf(buffer, "%s %02d.%02d at %02d",
+			calendar[i - 1].description, &calendar[i - 1].date.day,
+			&calendar[i - 1].date.month, &calendar[i - 1].date.hour);
+	}
+	if (ferror(file_ptr)) {
+		fclose(file_ptr);
+		return NULL;
+	}
+	fclose(file_ptr);
+	return calendar;
 }
 
 /**
@@ -367,6 +433,9 @@ Command command_parser()
 		return command;
 	}
 	command.type = ERROR;
+	command.message = (char *)realloc(
+		command.message, (strlen(line) + 1) * sizeof(char));
+	strcpy(command.message, line);
 	return command;
 }
 
@@ -439,6 +508,15 @@ int main()
 			free(command.message);
 			break;
 		case O:
+			processed = load_calendar(command.message);
+			if (!processed) {
+				printf("ERROR: Could not load a calendar!\n");
+				free(command.message);
+				break;
+			}
+			printf("SUCCESS\n");
+			num = file_line_count(command.message);
+			calendar = processed;
 			free(command.message);
 			break;
 		case Q:
@@ -446,7 +524,7 @@ int main()
 			free(command.message);
 			break;
 		case ERROR:
-			printf("ERROR: Could not process command, please try again.\n");
+			printf("Invalid command %s\n", command.message);
 			free(command.message);
 			break;
 		default:

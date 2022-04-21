@@ -66,5 +66,6 @@ Meeting *delete_meeting(Meeting *, int, MeetingDate);
 
 int write_calendar(Meeting *, int, const char *);
 
+Meeting *load_calendar(const char *);
 
 #endif //! _PROJECT__H_
