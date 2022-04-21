@@ -419,12 +419,12 @@ Command command_parser()
 
 	// read user input and parse it into each param buffer
 	fgets(line, 1000, stdin);
-	sscanf(line, "%s %s %s %s %s", type, param0, param1, param2, param3);
+	int num_parsed = 0;
+	num_parsed = sscanf(line, "%s %s %s %s %s", type, param0, param1, param2, param3);
 
 	if (strcmp(type, "A") == 0) {
 		// A command requires 4 arguments
-		if (((strlen(param0) > 0) && (strlen(param1) > 0)) &&
-		    ((strlen(param2) > 0) && (strlen(param3) > 0))) {
+		if (num_parsed == 5) {
 			command.type = A;
 			command.message = (char *)realloc(command.message,
 							  (strlen(param0) + 1) *
@@ -441,7 +441,7 @@ Command command_parser()
 		} else { // not enough arguments
 			command.type = ERROR;
 			char *error_msg =
-				"A should be followed by exactly 4 arguments.";
+				"A should be followed by exactly 4 arguments.\n";
 			command.message = (char *)realloc(
 				command.message,
 				(strlen(error_msg) + 1) * sizeof(char));
@@ -455,8 +455,7 @@ Command command_parser()
 	}
 	if (strcmp(type, "D") == 0) {
 		// D command requires 3 arguments
-		if ((strlen(param0) > 0) && (strlen(param1) > 0) &&
-		    (strlen(param2) > 0)) {
+		if (num_parsed == 4) {
 			command.type = D;
 			sscanf(param0, "%d", &command.meetingdate.month);
 			sscanf(param1, "%d", &command.meetingdate.day);
@@ -465,7 +464,7 @@ Command command_parser()
 		} else { // not enough arguments
 			command.type = ERROR;
 			char *error_msg =
-				"D should be followed by exactly 3 arguments.";
+				"D should be followed by exactly 3 arguments.\n";
 			command.message = (char *)realloc(
 				command.message,
 				(strlen(error_msg) + 1) * sizeof(char));
@@ -479,7 +478,7 @@ Command command_parser()
 	}
 	if (strcmp(type, "W") == 0) {
 		// W command requires 1 argument
-		if (strlen(param0) > 0) {
+		if (num_parsed == 2) {
 			command.type = W;
 			command.message = (char *)realloc(command.message,
 							  (strlen(param0) + 1) *
@@ -493,7 +492,7 @@ Command command_parser()
 		} else { // not enough arguments
 			command.type = ERROR;
 			char *error_msg =
-				"W should be followed by exactly 1 argument.";
+				"W should be followed by exactly 1 argument.\n";
 			command.message = (char *)realloc(
 				command.message,
 				(strlen(error_msg) + 1) * sizeof(char));
@@ -507,7 +506,7 @@ Command command_parser()
 	}
 	if (strcmp(type, "O") == 0) {
 		// O command requires 1 argument
-		if (strlen(param0) > 0) {
+		if (num_parsed == 2) {
 			command.type = O;
 			command.message = (char *)realloc(command.message,
 							  (strlen(param0) + 1) *
@@ -518,10 +517,10 @@ Command command_parser()
 			}
 			strcpy(command.message, param0);
 			return command;
-		} else { // nto enough arguments
+		} else { // not enough arguments
 			command.type = ERROR;
 			char *error_msg =
-				"O should be followed by exactly 1 argument.";
+				"O should be followed by exactly 1 argument.\n";
 			command.message = (char *)realloc(
 				command.message,
 				(strlen(error_msg) + 1) * sizeof(char));
@@ -542,9 +541,12 @@ Command command_parser()
 		return command;
 	}
 	command.type = ERROR;
-	command.message = (char *)realloc(command.message,
-					  (strlen(line) + 1) * sizeof(char));
-	strcpy(command.message, line);
+	char *error_msg = "Invalid command ";
+	command.message = (char *)realloc(
+		command.message,
+		(strlen(error_msg) + strlen(line) + 1) * sizeof(char));
+	strcpy(command.message, error_msg);
+	strcat(command.message, line);
 	return command;
 }
 
@@ -583,9 +585,9 @@ int main()
 					add_meeting(calendar, num, newmeeting);
 				if (!processed) {
 					printf("The time slot %02d.%02d at %02d is already allocated.\n",
-						command.meetingdate.day,
-						command.meetingdate.month,
-						command.meetingdate.hour);
+					       command.meetingdate.day,
+					       command.meetingdate.month,
+					       command.meetingdate.hour);
 					free(command.message);
 					break;
 				}
@@ -646,7 +648,7 @@ int main()
 			free(command.message);
 			break;
 		case ERROR:
-			printf("Invalid command %s\n", command.message);
+			printf(command.message);
 			free(command.message);
 			break;
 		default:
