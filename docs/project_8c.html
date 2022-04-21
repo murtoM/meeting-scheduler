@@ -108,6 +108,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a48789bcd2408ac2094a1dffafa1e3aa6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#a48789bcd2408ac2094a1dffafa1e3aa6">file_line_count</a> (const char *filename)</td></tr>
 <tr class="memdesc:a48789bcd2408ac2094a1dffafa1e3aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of lines in a file.  <a href="project_8c.html#a48789bcd2408ac2094a1dffafa1e3aa6">More...</a><br /></td></tr>
 <tr class="separator:a48789bcd2408ac2094a1dffafa1e3aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf8a4fdb186f3af43baa401f9b4a652"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#a9bf8a4fdb186f3af43baa401f9b4a652">validate_date</a> (<a class="el" href="structMeetingDate.html">MeetingDate</a> date)</td></tr>
+<tr class="memdesc:a9bf8a4fdb186f3af43baa401f9b4a652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates <code><a class="el" href="structMeetingDate.html">MeetingDate</a></code> and prints out a helpful error message.  <a href="project_8c.html#a9bf8a4fdb186f3af43baa401f9b4a652">More...</a><br /></td></tr>
+<tr class="separator:a9bf8a4fdb186f3af43baa401f9b4a652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2426186b3e0d20badffaaae580ff989"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMeeting.html">Meeting</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#ae2426186b3e0d20badffaaae580ff989">add_meeting</a> (<a class="el" href="structMeeting.html">Meeting</a> *calendar, int num, <a class="el" href="structMeeting.html">Meeting</a> newmeeting)</td></tr>
 <tr class="memdesc:ae2426186b3e0d20badffaaae580ff989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add new <code><a class="el" href="structMeeting.html">Meeting</a></code> to the calendar, if there is a free timeslot for it.  <a href="project_8c.html#ae2426186b3e0d20badffaaae580ff989">More...</a><br /></td></tr>
 <tr class="separator:ae2426186b3e0d20badffaaae580ff989"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,7 +180,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the new calendar, <code>NULL</code> if the new meeting could not be added </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00167">167</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00194">194</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -268,10 +271,10 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a class="code" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf">Q</a></div>
 <div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf">Q</a></div><div class="ttdeci">@ Q</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00034">project.h:34</a></div></div>
 </div><!-- fragment --><p>If the command is none of these, a <code><a class="el" href="structCommand.html">Command</a></code> with type <a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a2fd6f336d08340583bd620a7f5694c90">ERROR</a> is returned.</p>
-<dl class="section warning"><dt>Warning</dt><dd>There is no further validation or sanitation at the moment.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>There is quite little validation. The function only validates the command type and the number of arguments. <code><a class="el" href="structMeetingDate.html">MeetingDate</a></code> can be validated with <code><a class="el" href="project_8c.html#a9bf8a4fdb186f3af43baa401f9b4a652" title="Validates MeetingDate and prints out a helpful error message.">validate_date()</a></code>.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structCommand.html">Command</a> Parsed <code><a class="el" href="structCommand.html">Command</a></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00366">366</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00395">395</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -407,7 +410,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the new calendar, <code>NULL</code> if the meeting could not be deleted </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00196">196</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00223">223</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -468,7 +471,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar" </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00281">281</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00308">308</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -492,7 +495,7 @@ Functions</h2></td></tr>
 <p>Prints <code>SUCCESS\n</code> into <code>stdout</code> after each successfully processed command. If a command was not successfully processed, an error message is printed.</p>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> Zero if the application quits successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00453">453</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00564">564</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -535,6 +538,36 @@ Functions</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00088">88</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+
+</div>
+</div>
+<a id="a9bf8a4fdb186f3af43baa401f9b4a652"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bf8a4fdb186f3af43baa401f9b4a652">&#9670;&nbsp;</a></span>validate_date()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int validate_date </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structMeetingDate.html">MeetingDate</a>&#160;</td>
+          <td class="paramname"><em>date</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Validates <code><a class="el" href="structMeetingDate.html">MeetingDate</a></code> and prints out a helpful error message. </p>
+<p>Validates <code><a class="el" href="structMeetingDate.html">MeetingDate</a></code> and prints out a helpful error message as a side effect. Returns <code>0</code> if there is an validation error, otherwise returns <code>1</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td>A <code><a class="el" href="structMeetingDate.html">MeetingDate</a></code> to validate</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> <code>0</code> if there is validation errors, otherwise <code>0</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00162">162</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -584,7 +617,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> <code>1</code> if an error occurs during writing, <code>0</code> if writing was successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00244">244</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00271">271</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
