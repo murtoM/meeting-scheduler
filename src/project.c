@@ -150,6 +150,33 @@ int file_line_count(const char *filename)
 }
 
 /**
+ * \brief Validates `MeetingDate` and prints out a helpful error message
+ *
+ * Validates `MeetingDate` and prints out a helpful error message as a side
+ * effect. Returns `0` if there is an validation error, otherwise returns `1`.
+ * 
+ * \param date A `MeetingDate` to validate
+ *
+ * \return `int` `0` if there is validation errors, otherwise `0`
+ */
+int validate_date(MeetingDate date)
+{
+	if (date.month > 12 || date.month < 1) {
+		printf("Month cannot be less than 1 or greater than 12.\n");
+		return 0;
+	}
+	if (date.day > 31 || date.day < 1) {
+		printf("Day cannot be less than 1 or greater than 31.\n");
+		return 0;
+	}
+	if (date.hour > 23 || date.hour < 0) {
+		printf("Hour cannot be negative or greater than 23.\n");
+		return 0;
+	}
+	return 1;
+}
+
+/**
  * \brief Add new `Meeting` to the calendar, if there is a free timeslot for it
  * 
  * Add new `Meeting` to the calendar, if there is a free timeslot for it - if
@@ -285,15 +312,15 @@ Meeting *load_calendar(const char *filename)
 	if (!file_ptr)
 		return NULL;
 
-	Meeting *calendar = (Meeting *) malloc(sizeof(Meeting));
+	Meeting *calendar = (Meeting *)malloc(sizeof(Meeting));
 
 	memset(buffer, '\0', 1000);
 	int i = 0;
 	while (fgets(buffer, 1000, file_ptr)) {
-		calendar = (Meeting *) realloc(calendar, ++i * sizeof(Meeting));
+		calendar = (Meeting *)realloc(calendar, ++i * sizeof(Meeting));
 		sscanf(buffer, "%s %02d.%02d at %02d",
-			calendar[i - 1].description, &calendar[i - 1].date.day,
-			&calendar[i - 1].date.month, &calendar[i - 1].date.hour);
+		       calendar[i - 1].description, &calendar[i - 1].date.day,
+		       &calendar[i - 1].date.month, &calendar[i - 1].date.hour);
 	}
 	if (ferror(file_ptr)) {
 		fclose(file_ptr);
@@ -433,8 +460,8 @@ Command command_parser()
 		return command;
 	}
 	command.type = ERROR;
-	command.message = (char *)realloc(
-		command.message, (strlen(line) + 1) * sizeof(char));
+	command.message = (char *)realloc(command.message,
+					  (strlen(line) + 1) * sizeof(char));
 	strcpy(command.message, line);
 	return command;
 }
@@ -466,34 +493,39 @@ int main()
 		command = command_parser();
 		switch (command.type) {
 		case A:
-			newmeeting.date = command.meetingdate;
-			memset(newmeeting.description, '\0', 64);
-			strcpy(newmeeting.description, command.message);
-			processed = add_meeting(calendar, num, newmeeting);
-			if (!processed) {
-				printf("ERROR: Meeting timeslot already taken!\n");
-				free(command.message);
-				break;
+			if (validate_date(command.meetingdate)) {
+				newmeeting.date = command.meetingdate;
+				memset(newmeeting.description, '\0', 64);
+				strcpy(newmeeting.description, command.message);
+				processed =
+					add_meeting(calendar, num, newmeeting);
+				if (!processed) {
+					printf("ERROR: Meeting timeslot already taken!\n");
+					free(command.message);
+					break;
+				}
+				num++;
+				printf("SUCCESS\n");
+				calendar = processed;
 			}
-			num++;
-			printf("SUCCESS\n");
-			calendar = processed;
 			free(command.message);
 			break;
 		case D:
-			processed = delete_meeting(calendar, num,
-						   command.meetingdate);
-			if (!processed) {
-				printf("The time slot %02d.%02d at %02d is not in the calendar\n",
-					command.meetingdate.day,
-					command.meetingdate.month,
-					command.meetingdate.hour);
-				free(command.message);
-				break;
+			if (validate_date(command.meetingdate)) {
+				processed = delete_meeting(calendar, num,
+							   command.meetingdate);
+				if (!processed) {
+					printf("The time slot %02d.%02d at %02d is not in the calendar.\n",
+					       command.meetingdate.day,
+					       command.meetingdate.month,
+					       command.meetingdate.hour);
+					free(command.message);
+					break;
+				}
+				num--;
+				printf("SUCCESS\n");
+				calendar = processed;
 			}
-			num--;
-			printf("SUCCESS\n");
-			calendar = processed;
 			free(command.message);
 			break;
 		case L:
@@ -514,7 +546,7 @@ int main()
 			processed = load_calendar(command.message);
 			if (!processed) {
 				printf("Cannot open file %s for reading.\n",
-					command.message);
+				       command.message);
 				free(command.message);
 				break;
 			}
