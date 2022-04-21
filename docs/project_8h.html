@@ -124,6 +124,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9865265a9aae72bc69666afa84db464a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8h.html#a9865265a9aae72bc69666afa84db464a">write_calendar</a> (<a class="el" href="structMeeting.html">Meeting</a> *, int, const char *)</td></tr>
 <tr class="memdesc:a9865265a9aae72bc69666afa84db464a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the calendar as plain text into a file.  <a href="project_8h.html#a9865265a9aae72bc69666afa84db464a">More...</a><br /></td></tr>
 <tr class="separator:a9865265a9aae72bc69666afa84db464a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fb5e3a6515d6a64349c449eabd048e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMeeting.html">Meeting</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8h.html#a4fb5e3a6515d6a64349c449eabd048e6">load_calendar</a> (const char *)</td></tr>
+<tr class="memdesc:a4fb5e3a6515d6a64349c449eabd048e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a calendar plain text file and returns a <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar".  <a href="project_8h.html#a4fb5e3a6515d6a64349c449eabd048e6">More...</a><br /></td></tr>
+<tr class="separator:a4fb5e3a6515d6a64349c449eabd048e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Markus Murto</dd></dl>
@@ -159,7 +162,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="project_8h_source.html#l00024">24</a> of file <a class="el" href="project_8h_source.html">project.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8h_source.html#l00028">28</a> of file <a class="el" href="project_8h_source.html">project.h</a>.</p>
 
 </div>
 </div>
@@ -208,7 +211,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the new calendar, <code>NULL</code> if the new meeting could not be added </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00137">137</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00167">167</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -256,7 +259,38 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the new calendar, <code>NULL</code> if the meeting could not be deleted </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00166">166</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00196">196</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+
+</div>
+</div>
+<a id="a4fb5e3a6515d6a64349c449eabd048e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fb5e3a6515d6a64349c449eabd048e6">&#9670;&nbsp;</a></span>load_calendar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMeeting.html">Meeting</a>* load_calendar </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads a calendar plain text file and returns a <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar". </p>
+<p>Reads a calendar plain text file, which has to be written in the same format as <code><a class="el" href="project_8c.html#ad6d14c50e85ec4f0c9d7f4d14300a7ba" title="Writes the calendar as plain text into a file.">write_calendar()</a></code> uses.</p>
+<p>Does not return the number of lines in the file, you have to use the function <code><a class="el" href="project_8c.html#a48789bcd2408ac2094a1dffafa1e3aa6" title="Returns the number of lines in a file.">file_line_count()</a></code> to get the number of lines in a file, which is used in other functions.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>Path to filename from which calendar is read from</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar" </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00281">281</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -298,7 +332,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00084">84</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00088">88</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -348,7 +382,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> <code>1</code> if an error occurs during writing, <code>0</code> if writing was successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00214">214</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00244">244</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>

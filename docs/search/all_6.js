@@ -1,10 +1,5 @@
 var searchData=
 [
-  ['main_16',['main',['../project_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'project.c']]],
-  ['meeting_17',['Meeting',['../structMeeting.html',1,'']]],
-  ['meeting_2dscheduler_18',['meeting-scheduler',['../index.html',1,'']]],
-  ['meetingdate_19',['MeetingDate',['../structMeetingDate.html',1,'']]],
-  ['meetingdate_20',['meetingdate',['../structCommand.html#ae00e1540af5f73d84810ddbec43460f2',1,'Command']]],
-  ['message_21',['message',['../structCommand.html#aaccd73ab49b1c95854416c0c731d7c97',1,'Command']]],
-  ['month_22',['month',['../structMeetingDate.html#a68ac4d87243ca94aca79ec556a850ae8',1,'MeetingDate']]]
+  ['l_16',['L',['../project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f',1,'project.h']]],
+  ['load_5fcalendar_17',['load_calendar',['../project_8h.html#a4fb5e3a6515d6a64349c449eabd048e6',1,'load_calendar(const char *):&#160;project.c'],['../project_8c.html#abd84a502ef4a2959710a6203bc06ad23',1,'load_calendar(const char *filename):&#160;project.c']]]
 ];

@@ -105,6 +105,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aee49367fcc929e3c8a15354aba940645"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#aee49367fcc929e3c8a15354aba940645">check_timeslot</a> (<a class="el" href="structMeeting.html">Meeting</a> *calendar, int num, <a class="el" href="structMeeting.html">Meeting</a> newmeeting)</td></tr>
 <tr class="memdesc:aee49367fcc929e3c8a15354aba940645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the calendar already has the timeslot taken.  <a href="project_8c.html#aee49367fcc929e3c8a15354aba940645">More...</a><br /></td></tr>
 <tr class="separator:aee49367fcc929e3c8a15354aba940645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48789bcd2408ac2094a1dffafa1e3aa6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#a48789bcd2408ac2094a1dffafa1e3aa6">file_line_count</a> (const char *filename)</td></tr>
+<tr class="memdesc:a48789bcd2408ac2094a1dffafa1e3aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of lines in a file.  <a href="project_8c.html#a48789bcd2408ac2094a1dffafa1e3aa6">More...</a><br /></td></tr>
+<tr class="separator:a48789bcd2408ac2094a1dffafa1e3aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2426186b3e0d20badffaaae580ff989"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMeeting.html">Meeting</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#ae2426186b3e0d20badffaaae580ff989">add_meeting</a> (<a class="el" href="structMeeting.html">Meeting</a> *calendar, int num, <a class="el" href="structMeeting.html">Meeting</a> newmeeting)</td></tr>
 <tr class="memdesc:ae2426186b3e0d20badffaaae580ff989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add new <code><a class="el" href="structMeeting.html">Meeting</a></code> to the calendar, if there is a free timeslot for it.  <a href="project_8c.html#ae2426186b3e0d20badffaaae580ff989">More...</a><br /></td></tr>
 <tr class="separator:ae2426186b3e0d20badffaaae580ff989"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,6 +117,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad6d14c50e85ec4f0c9d7f4d14300a7ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#ad6d14c50e85ec4f0c9d7f4d14300a7ba">write_calendar</a> (<a class="el" href="structMeeting.html">Meeting</a> *calendar, int num, const char *filename)</td></tr>
 <tr class="memdesc:ad6d14c50e85ec4f0c9d7f4d14300a7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the calendar as plain text into a file.  <a href="project_8c.html#ad6d14c50e85ec4f0c9d7f4d14300a7ba">More...</a><br /></td></tr>
 <tr class="separator:ad6d14c50e85ec4f0c9d7f4d14300a7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd84a502ef4a2959710a6203bc06ad23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMeeting.html">Meeting</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#abd84a502ef4a2959710a6203bc06ad23">load_calendar</a> (const char *filename)</td></tr>
+<tr class="memdesc:abd84a502ef4a2959710a6203bc06ad23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a calendar plain text file and returns a <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar".  <a href="project_8c.html#abd84a502ef4a2959710a6203bc06ad23">More...</a><br /></td></tr>
+<tr class="separator:abd84a502ef4a2959710a6203bc06ad23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a539d283a161b00942d9d04de855fb902"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCommand.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="project_8c.html#a539d283a161b00942d9d04de855fb902">command_parser</a> ()</td></tr>
 <tr class="memdesc:a539d283a161b00942d9d04de855fb902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes a command from the user and returns it as a <code><a class="el" href="structCommand.html">Command</a></code>  <a href="project_8c.html#a539d283a161b00942d9d04de855fb902">More...</a><br /></td></tr>
 <tr class="separator:a539d283a161b00942d9d04de855fb902"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,7 +177,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the new calendar, <code>NULL</code> if the new meeting could not be added </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00137">137</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00167">167</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -220,7 +226,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> Index of matching meeting timeslot in calendar, <code>-1</code> if there is no match </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00111">111</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00115">115</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -245,27 +251,27 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line">A &lt;description&gt; &lt;month&gt; &lt;day&gt; &lt;hour&gt;</div>
 </div><!-- fragment --><p>For example:</p>
 <div class="fragment"><div class="line"><a class="code" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a42a4ade1acd55a49164099104990e09f">A</a> Haircut 3 26 14</div>
-<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1a42a4ade1acd55a49164099104990e09f"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a42a4ade1acd55a49164099104990e09f">A</a></div><div class="ttdeci">@ A</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00025">project.h:25</a></div></div>
+<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1a42a4ade1acd55a49164099104990e09f"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a42a4ade1acd55a49164099104990e09f">A</a></div><div class="ttdeci">@ A</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00029">project.h:29</a></div></div>
 </div><!-- fragment --><p>Expected Delete meeting (<a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a77a6b11f9898c052926f1d49765861e8">D</a>) command:</p>
 <div class="fragment"><div class="line">D &lt;month&gt; &lt;day&gt; &lt;hour&gt;</div>
 </div><!-- fragment --><p>For example:</p>
 <div class="fragment"><div class="line"><a class="code" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a77a6b11f9898c052926f1d49765861e8">D</a> 3 26 14</div>
-<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1a77a6b11f9898c052926f1d49765861e8"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a77a6b11f9898c052926f1d49765861e8">D</a></div><div class="ttdeci">@ D</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00026">project.h:26</a></div></div>
+<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1a77a6b11f9898c052926f1d49765861e8"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a77a6b11f9898c052926f1d49765861e8">D</a></div><div class="ttdeci">@ D</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00030">project.h:30</a></div></div>
 </div><!-- fragment --><p>Expected Print calendar (<a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f">L</a>) command:</p>
 <div class="fragment"><div class="line"><a class="code" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f">L</a></div>
-<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f">L</a></div><div class="ttdeci">@ L</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00027">project.h:27</a></div></div>
+<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aef31cc6fe9479955961311ee18ac205f">L</a></div><div class="ttdeci">@ L</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00031">project.h:31</a></div></div>
 </div><!-- fragment --><p>Expected Save to file (<a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1ab722ceeb601c72cd78fbd35f3581fdf7">W</a>) command:</p>
 <div class="fragment"><div class="line">W &lt;filename&gt;</div>
 </div><!-- fragment --><p>Expected Load from file (<a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1af4b8b7698dfedf5562a7db2bdb07010a">O</a>) command:</p>
 <div class="fragment"><div class="line">O &lt;filename&gt;</div>
 </div><!-- fragment --><p>Expected Quit program (<a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf">Q</a>) command:</p>
 <div class="fragment"><div class="line"><a class="code" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf">Q</a></div>
-<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf">Q</a></div><div class="ttdeci">@ Q</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00030">project.h:30</a></div></div>
+<div class="ttc" id="aproject_8h_html_ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf"><div class="ttname"><a href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1aa53ab217f1572250a530c8c2b3c820cf">Q</a></div><div class="ttdeci">@ Q</div><div class="ttdef"><b>Definition:</b> <a href="project_8h_source.html#l00034">project.h:34</a></div></div>
 </div><!-- fragment --><p>If the command is none of these, a <code><a class="el" href="structCommand.html">Command</a></code> with type <a class="el" href="project_8h.html#ae74a8e48ea1270f38d0f8d89df3de7b1a2fd6f336d08340583bd620a7f5694c90">ERROR</a> is returned.</p>
 <dl class="section warning"><dt>Warning</dt><dd>There is no further validation or sanitation at the moment.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structCommand.html">Command</a> Parsed <code><a class="el" href="structCommand.html">Command</a></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00296">296</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00366">366</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -312,7 +318,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> Comparison result </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00032">32</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00036">36</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -353,7 +359,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> Comparision result, as <code>qsort()</code> expects </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00053">53</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00057">57</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -401,7 +407,68 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the new calendar, <code>NULL</code> if the meeting could not be deleted </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00166">166</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00196">196</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+
+</div>
+</div>
+<a id="a48789bcd2408ac2094a1dffafa1e3aa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48789bcd2408ac2094a1dffafa1e3aa6">&#9670;&nbsp;</a></span>file_line_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int file_line_count </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of lines in a file. </p>
+<p>Returns the number of lines in a file, if an error occurs while reading the file, returns <code>-1</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>The name of the file</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> The number of files in the file, or <code>-1</code> if an error occurs </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00136">136</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+
+</div>
+</div>
+<a id="abd84a502ef4a2959710a6203bc06ad23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd84a502ef4a2959710a6203bc06ad23">&#9670;&nbsp;</a></span>load_calendar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMeeting.html">Meeting</a>* load_calendar </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads a calendar plain text file and returns a <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar". </p>
+<p>Reads a calendar plain text file, which has to be written in the same format as <code><a class="el" href="project_8c.html#ad6d14c50e85ec4f0c9d7f4d14300a7ba" title="Writes the calendar as plain text into a file.">write_calendar()</a></code> uses.</p>
+<p>Does not return the number of lines in the file, you have to use the function <code><a class="el" href="project_8c.html#a48789bcd2408ac2094a1dffafa1e3aa6" title="Returns the number of lines in a file.">file_line_count()</a></code> to get the number of lines in a file, which is used in other functions.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>Path to filename from which calendar is read from</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structMeeting.html">Meeting</a></code>* Pointer to the <code><a class="el" href="structMeeting.html">Meeting</a></code> array, "calendar" </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00281">281</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -425,7 +492,7 @@ Functions</h2></td></tr>
 <p>Prints <code>SUCCESS\n</code> into <code>stdout</code> after each successfully processed command. If a command was not successfully processed, an error message is printed.</p>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> Zero if the application quits successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00380">380</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00453">453</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -467,7 +534,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00084">84</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00088">88</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
@@ -517,7 +584,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>int</code> <code>1</code> if an error occurs during writing, <code>0</code> if writing was successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00214">214</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="project_8c_source.html#l00244">244</a> of file <a class="el" href="project_8c_source.html">project.c</a>.</p>
 
 </div>
 </div>
