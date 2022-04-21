@@ -648,7 +648,7 @@ int main()
 			free(command.message);
 			break;
 		case ERROR:
-			printf(command.message);
+			printf("%s", command.message);
 			free(command.message);
 			break;
 		default:
