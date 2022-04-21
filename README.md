@@ -6,7 +6,12 @@ SPDX-License-Identifier: CC0-1.0
 
 # meeting-scheduler
 
-Simple meeting scheduler project done in C basics course.
+Simple meeting scheduler implemented in C99. Done as a project assignment in
+C basics course.
+
+## Usage
+
+You can find usage examples in documentation for `command_parser()`.
 
 ## License
 
